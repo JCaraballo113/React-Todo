@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var moment = require('moment');
 
 module.exports = {
   setTodos: function(todos) {
@@ -47,5 +48,17 @@ module.exports = {
     });
 
     return filteredTodos;
+  },
+  getFormattedDate: function(message, timestamp, desiredFormat){
+    desiredFormat = desiredFormat === '' ? 'MMM D YY @ h:mm a' : desiredFormat;
+    message = message === ''? "Timestamp: " : message;
+
+    var formattedDate = '';
+
+    if(timestamp === 'number') {
+      formattedDate = message + moment.unix(timestamp).format(desiredFormat);
+    }
+
+    return formattedDate;
   }
 };
