@@ -51,11 +51,11 @@ module.exports = {
   },
   getFormattedDate: function(message, timestamp, desiredFormat){
     desiredFormat = desiredFormat === '' ? 'MMM D YY @ h:mm a' : desiredFormat;
-    message = message === ''? "Timestamp: " : message;
-
+    message = message === '' ? "Timestamp: " : message;
+    
     var formattedDate = '';
 
-    if(timestamp === 'number') {
+    if(typeof timestamp === 'number') {
       formattedDate = message + moment.unix(timestamp).format(desiredFormat);
     }
 

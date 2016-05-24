@@ -19,7 +19,7 @@ var TodoList = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="container__footer">
         <form onSubmit={this.handleAddTodo}>
           <input type="search" ref="todo" placeholder="What do you need to do?"/>
           <button className="button expanded" ref="addTodo">Add Todo</button>
