@@ -19,7 +19,8 @@ describe('Todo', () => {
       id: 1,
       text: 'blah',
       completed: false
-    }
+    };
+    
     var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} onToggle={spy}/>);
     TestUtils.Simulate.click(todo.refs.toggler);
     expect(spy).toHaveBeenCalledWith(1);
