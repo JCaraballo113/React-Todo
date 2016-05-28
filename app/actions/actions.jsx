@@ -31,3 +31,24 @@ export var toggleTodo  = (id) => {
     id
   };
 };
+
+export var editTodo = (id) => {
+  return {
+    type: "EDIT_TODO",
+    id
+  }
+};
+
+export var saveEditedTodo = (id, text) => {
+  return {
+    type: "SAVE_EDIT",
+    id,
+    text
+  };
+}
+
+export var resetEditables = () => {
+  return {
+    type: "RESET_EDITABLE_TODOS"
+  }
+}

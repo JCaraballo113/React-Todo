@@ -29,4 +29,50 @@ describe('Todo', () => {
     });
   });
 
+  it('should dispatch EDIT_TODO action on click', () => {
+    var spy = expect.createSpy();
+    var dummyTodo = {
+        id: 1,
+        text: 'b',
+        completed: false,
+        completedAt: 123,
+        createdAt: 1,
+        editable: false,
+        edited: false,
+        editedAt: undefined
+      };
+
+    var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} dispatch={spy}/>);
+    expect(todo.refs.editTodoBtn).toExist();
+    TestUtils.Simulate.click(todo.refs.editTodoBtn);
+    expect(spy).toHaveBeenCalledWith({
+      type: "EDIT_TODO",
+      id: 1
+    });
+  });
+
+  it('should dispatch SAVE_EDIT action on click', () => {
+    var spy = expect.createSpy();
+    var dummyTodo = {
+        id: 1,
+        text: 'b',
+        completed: false,
+        completedAt: 123,
+        createdAt: 1,
+        editable: true,
+        edited: false,
+        editedAt: undefined
+      };
+
+    var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} dispatch={spy}/>);
+    expect(todo.refs.saveEditBtn).toExist();
+    todo.refs.editTodoText.value = 'pet';
+    TestUtils.Simulate.click(todo.refs.saveEditBtn);
+    expect(spy).toHaveBeenCalledWith({
+      type: "SAVE_EDIT",
+      id: 1,
+      text: "pet"
+    });
+  });
+
 });

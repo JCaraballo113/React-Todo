@@ -63,4 +63,38 @@ describe('Actions', () => {
 
     expect(res).toEqual(action);
   });
+
+  it('should generate edit todo action', () => {
+    var action = {
+      type: 'EDIT_TODO',
+      id: 1
+    };
+
+    var res = actions.editTodo(action.id);
+
+    expect(res).toEqual(action);
+  });
+
+  it('should generate save edited todo action', () => {
+    var todoText = "blah";
+    var action = {
+      type: 'SAVE_EDIT',
+      id: 1,
+      text: todoText
+    };
+
+    var res = actions.saveEditedTodo(action.id, todoText);
+
+    expect(res).toEqual(action);
+  });
+
+  it('should generate reset editable todos action', () => {
+    var action = {
+      type: 'RESET_EDITABLE_TODOS'
+    };
+
+    var res = actions.resetEditables();
+
+    expect(res).toEqual(action);
+  });
 });

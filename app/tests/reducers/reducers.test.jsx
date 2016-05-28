@@ -83,6 +83,75 @@ describe('Reducers', () => {
       expect(res.length).toBe(1);
       expect(res[0]).toEqual(todos[0])
     });
+
+    it('should set a todo as editable', () => {
+      var todos = [
+        {
+          id: 1,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1,
+          editable: false,
+          edited: false,
+          editedAt: undefined
+        }
+      ];
+      var action = {
+        type: 'EDIT_TODO',
+        id: todos[0].id
+      };
+
+      var res = reducers.todosReducer(df(todos), df(action));
+
+      expect(res[0].editable).toEqual(true);
+    });
+
+    it('should save edit on a todo', () => {
+      var todos = [
+        {
+          id: 1,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1,
+          editable: true,
+          edited: false,
+          editedAt: undefined
+        }
+      ];
+      var action = {
+        type: 'SAVE_EDIT',
+        id: 1,
+        text: 'bloodbath'
+      };
+
+      var res = reducers.todosReducer(df(todos), df(action));
+
+      expect(res[0].text).toEqual('bloodbath');
+    });
+
+    it('should reset editable todos', () => {
+      var todos = [
+        {
+          id: 1,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1,
+          editable: true,
+          edited: false,
+          editedAt: undefined
+        }
+      ];
+      var action = {
+        type: 'RESET_EDITABLE_TODOS'
+      };
+
+      var res = reducers.todosReducer(df(todos), df(action));
+
+      expect(res[0].editable).toEqual(false);
+    });
   });
 
 });

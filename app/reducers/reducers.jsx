@@ -29,7 +29,10 @@ export var todosReducer = (state=[], action) => {
           text: action.text,
           completed: false,
           createdAt: moment().unix(),
-          completedAt: undefined
+          completedAt: undefined,
+          editable: false,
+          edited: false,
+          editedAt: undefined
         }
       ];
     case "TOGGLE_TODO":
@@ -51,6 +54,42 @@ export var todosReducer = (state=[], action) => {
           ...state,
           ...action.todos
         ];
+      case "EDIT_TODO":
+        return state.map((todo) =>{
+          if(todo.id === action.id) {
+            var editable = !todo.editable;
+
+            return {
+              ...todo,
+              editable: editable
+            };
+          }
+          else {
+            return todo;
+          }
+        });
+    case "SAVE_EDIT":
+      return state.map((todo) => {
+        if(todo.id === action.id){
+          return {
+            ...todo,
+            text: action.text,
+            editable: false,
+            edited: true,
+            editedAt: moment().unix()
+          }
+        }
+        else {
+          return todo;
+        }
+      });
+    case "RESET_EDITABLE_TODOS":
+    return state.map((todo) => {
+      return {
+        ...todo,
+        editable: false
+      }
+    });
     default:
       return state;
   };
