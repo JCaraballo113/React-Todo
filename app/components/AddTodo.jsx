@@ -1,17 +1,20 @@
 var React = require('react');
-var Todo = require('Todo');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
-var TodoList = React.createClass({
+export var AddTodo = React.createClass({
   propTypes: {
     onAddTodo: React.PropTypes.func.isRequired
   },
   handleAddTodo: function (e) {
     e.preventDefault();
+    var {dispatch} = this.props
     var todo = this.refs.todo.value;
 
     if(typeof todo === 'string' && todo.length > 0) {
       this.refs.todo.value = '';
-      this.props.onAddTodo(todo);
+      //this.props.onAddTodo(todo);
+      dispatch(actions.addTodo(todo));
     }
     else {
       this.refs.todo.focus();
@@ -29,4 +32,4 @@ var TodoList = React.createClass({
   }
 });
 
-module.exports = TodoList;
+export default connect()(AddTodo);

@@ -4,7 +4,7 @@ var expect = require('expect');
 var $ = require('jQuery');
 var TestUtils = require('react-addons-test-utils');
 
-var Todo =  require('Todo');
+var {Todo} = require('Todo');
 
 
 describe('Todo', () => {
@@ -13,17 +13,20 @@ describe('Todo', () => {
     }
   );
 
-  it('should pass the correct id to the parent function when todo is clicked', () => {
+  it('should dispatch TOGGLE_TODO action on click', () => {
     var spy = expect.createSpy();
     var dummyTodo = {
       id: 1,
       text: 'blah',
       completed: false
     };
-    
-    var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} onToggle={spy}/>);
+
+    var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} dispatch={spy}/>);
     TestUtils.Simulate.click(todo.refs.toggler);
-    expect(spy).toHaveBeenCalledWith(1);
+    expect(spy).toHaveBeenCalledWith({
+      type: "TOGGLE_TODO",
+      id: 1
+    });
   });
 
 });

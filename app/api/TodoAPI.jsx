@@ -31,7 +31,7 @@ module.exports = {
 
     //Filter by searchText
     filteredTodos = filteredTodos.filter((todo) => {
-      return searchText.length === 0 || todo.text.toLowerCase().indexOf(searchText) > -1;
+      return searchText.length === 0 || todo.text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
     });
 
     //Sort todos with non-completed first
@@ -52,7 +52,7 @@ module.exports = {
   getFormattedDate: function(message, timestamp, desiredFormat){
     desiredFormat = desiredFormat === '' ? 'MMM D YY @ h:mm a' : desiredFormat;
     message = message === '' ? "Timestamp: " : message;
-    
+
     var formattedDate = '';
 
     if(typeof timestamp === 'number') {
