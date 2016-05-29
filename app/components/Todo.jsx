@@ -11,14 +11,14 @@ export var Todo = React.createClass({
       var message = 'Created ';
       var timestamp = createdAt;
 
-      if(completed) {
-        message = 'Completed ';
-        timestamp = completedAt;
-      }
-
       if (edited) {
         message = 'Edited '
         timestamp = editedAt;
+      }
+
+      if(completed) {
+        message = 'Completed ';
+        timestamp = completedAt;
       }
 
       var formattedDate = TodoAPI.getFormattedDate(message, timestamp, 'MMM Do YYYY @ h:mm a');
@@ -26,7 +26,7 @@ export var Todo = React.createClass({
     };
 
     var renderTodo = () => {
-      if(editable) {
+      if(editable && !completed) {
         return   <input className="edit-input" type="text" placeholder={text} ref="editTodoText"/>
       }
       else {
@@ -35,22 +35,24 @@ export var Todo = React.createClass({
     };
 
     var renderButton = () => {
-      if(!editable) {
-        return <button className="small button expanded hollow" ref="editTodoBtn" onClick={() => {
-            dispatch(actions.editTodo(id));
-          }}>Edit Todo</button>;
-      }
-      else {
-        return <button className="small success button expanded hollow" ref="saveEditBtn" onClick={() => {
-            var newText = this.refs.editTodoText.value;
-            this.refs.editTodoText.value = '';
-            if(newText.length > 0) {
-              dispatch(actions.saveEditedTodo(id,newText));
-            }
-            else {
-              dispatch(actions.saveEditedTodo(id,text));
-            }
-          }}>Save</button>;
+      if(!completed) {
+        if(!editable) {
+          return <button className="small button expanded hollow" ref="editTodoBtn" onClick={() => {
+              dispatch(actions.editTodo(id));
+            }}>Edit Todo</button>;
+        }
+        else {
+          return <button className="small success button expanded hollow" ref="saveEditBtn" onClick={() => {
+              var newText = this.refs.editTodoText.value;
+              this.refs.editTodoText.value = '';
+              if(newText.length > 0) {
+                dispatch(actions.saveEditedTodo(id,newText));
+              }
+              else {
+                dispatch(actions.saveEditedTodo(id,text));
+              }
+            }}>Save</button>;
+        }
       }
     }
 
