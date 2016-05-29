@@ -36,12 +36,12 @@ export var Todo = React.createClass({
 
     var renderButton = () => {
       if(!editable) {
-        return <button className="small button expanded" ref="editTodoBtn" onClick={() => {
+        return <button className="small button expanded hollow" ref="editTodoBtn" onClick={() => {
             dispatch(actions.editTodo(id));
           }}>Edit Todo</button>;
       }
       else {
-        return <button className="small success button expanded" ref="saveEditBtn" onClick={() => {
+        return <button className="small success button expanded hollow" ref="saveEditBtn" onClick={() => {
             var newText = this.refs.editTodoText.value;
             this.refs.editTodoText.value = '';
             if(newText.length > 0) {
@@ -68,7 +68,7 @@ export var Todo = React.createClass({
         </div>
         <div className="controls">
           {renderButton()}
-          <button className="small expanded button alert" ref="deleteTodoBtn" onClick={() => {
+          <button className="small expanded button alert hollow" ref="deleteTodoBtn" onClick={() => {
               dispatch(actions.deleteTodo(id));
             }}>Delete</button>
         </div>

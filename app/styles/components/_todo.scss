@@ -2,7 +2,6 @@
   align-items: center;
   display: flex;
   padding: 1rem;
-  transition: background .3s ease;
   border-bottom: solid 1px $light-grey-border;
   justify-content: space-between;
 
@@ -18,9 +17,6 @@
     margin-right: 1rem;
   }
 
-  &:hover {
-    background: #f0f0f0;
-  }
 }
 
 .todo__subtext {
