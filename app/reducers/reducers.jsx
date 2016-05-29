@@ -68,6 +68,10 @@ export var todosReducer = (state=[], action) => {
             return todo;
           }
         });
+    case "DELETE_TODO":
+      return state.filter((todo) => {
+        return todo.id !== action.id
+      });
     case "SAVE_EDIT":
       return state.map((todo) => {
         if(todo.id === action.id){

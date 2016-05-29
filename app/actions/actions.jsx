@@ -39,6 +39,13 @@ export var editTodo = (id) => {
   }
 };
 
+export var deleteTodo = (id) => {
+  return {
+    type: "DELETE_TODO",
+    id
+  }
+}
+
 export var saveEditedTodo = (id, text) => {
   return {
     type: "SAVE_EDIT",

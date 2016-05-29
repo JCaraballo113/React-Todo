@@ -4,6 +4,7 @@
   padding: 1rem;
   transition: background .3s ease;
   border-bottom: solid 1px $light-grey-border;
+  justify-content: space-between;
 
   input[type="checkbox"] {
     cursor: pointer;
@@ -33,20 +34,11 @@
   }
 }
 
-.edit {
-  align-self: flex-start;
-  margin: 1px 0px 0px 50px;
+.controls {
+  margin-left: 5px;
 }
 
 .edit-input {
   height: 1.6em;
   padding: 0;
-}
-
-.save {
-  padding: .85em 2em;
-}
-
-.editBtn, .save {
-  margin:0;
 }

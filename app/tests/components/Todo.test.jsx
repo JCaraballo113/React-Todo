@@ -25,7 +25,7 @@ describe('Todo', () => {
     TestUtils.Simulate.click(todo.refs.toggler);
     expect(spy).toHaveBeenCalledWith({
       type: "TOGGLE_TODO",
-      id: 1
+      id: dummyTodo.id
     });
   });
 
@@ -47,7 +47,7 @@ describe('Todo', () => {
     TestUtils.Simulate.click(todo.refs.editTodoBtn);
     expect(spy).toHaveBeenCalledWith({
       type: "EDIT_TODO",
-      id: 1
+      id: dummyTodo.id
     });
   });
 
@@ -70,9 +70,31 @@ describe('Todo', () => {
     TestUtils.Simulate.click(todo.refs.saveEditBtn);
     expect(spy).toHaveBeenCalledWith({
       type: "SAVE_EDIT",
-      id: 1,
+      id: dummyTodo.id,
       text: "pet"
     });
   });
+
+  it('should dispatch DELETE_TODO action on click', () => {
+    var spy = expect.createSpy();
+    var dummyTodo = {
+        id: 1,
+        text: 'b',
+        completed: false,
+        completedAt: 123,
+        createdAt: 1,
+        editable: true,
+        edited: false,
+        editedAt: undefined
+      };
+
+    var todo = TestUtils.renderIntoDocument(<Todo key={dummyTodo.id} {...dummyTodo} dispatch={spy}/>);
+    expect(todo.refs.deleteTodoBtn).toExist();
+    TestUtils.Simulate.click(todo.refs.deleteTodoBtn);
+    expect(spy).toHaveBeenCalledWith({
+      type: "DELETE_TODO",
+      id: dummyTodo.id
+    });
+});
 
 });

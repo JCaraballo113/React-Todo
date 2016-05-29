@@ -152,6 +152,39 @@ describe('Reducers', () => {
 
       expect(res[0].editable).toEqual(false);
     });
+
+    it('should delete todo', () => {
+      var todos = [
+        {
+          id: 1,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1,
+          editable: false,
+          edited: false,
+          editedAt: undefined
+        },
+        {
+          id: 2,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1,
+          editable: false,
+          edited: false,
+          editedAt: undefined
+        }
+      ];
+      var action = {
+        type: 'DELETE_TODO',
+        id: todos[0].id
+      };
+
+      var res = reducers.todosReducer(df(todos), df(action));
+
+      expect(res.length).toEqual(1);
+    });
   });
 
 });

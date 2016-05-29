@@ -97,4 +97,15 @@ describe('Actions', () => {
 
     expect(res).toEqual(action);
   });
+
+  it('should generate delete todo action', () => {
+    var action = {
+      type: 'DELETE_TODO',
+      id: 1
+    };
+
+    var res = actions.deleteTodo(1);
+
+    expect(res).toEqual(action);
+  });
 });
