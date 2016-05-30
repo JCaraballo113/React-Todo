@@ -14,7 +14,6 @@ store.subscribe(() => {
 
 var initialTodos = TodoAPI.getTodos();
 store.dispatch(actions.addTodos(initialTodos));
-store.dispatch(actions.resetEditables());
 
 // Load foundation
 $(document).foundation();

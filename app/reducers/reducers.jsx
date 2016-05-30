@@ -26,15 +26,13 @@ export var todosReducer = (state=[], action) => {
         ...state,
         action.todo
       ];
-    case "TOGGLE_TODO":
+    case "UPDATE_TODO":
       return state.map((todo) => {
         if(todo.id === action.id) {
-          var nextCompleted = !todo.completed;
           return {
             ...todo,
-            completed: nextCompleted,
-            completedAt: nextCompleted ? moment().unix() : undefined
-          };
+            ...action.updates
+          }
         }
         else {
           return todo;
@@ -45,38 +43,9 @@ export var todosReducer = (state=[], action) => {
           ...state,
           ...action.todos
         ];
-      case "EDIT_TODO":
-        return state.map((todo) =>{
-          if(todo.id === action.id) {
-            var editable = !todo.editable;
-
-            return {
-              ...todo,
-              editable: editable
-            };
-          }
-          else {
-            return todo;
-          }
-        });
     case "DELETE_TODO":
       return state.filter((todo) => {
-        return todo.id !== action.id
-      });
-    case "SAVE_EDIT":
-      return state.map((todo) => {
-        if(todo.id === action.id){
-          return {
-            ...todo,
-            text: action.text,
-            editable: false,
-            edited: true,
-            editedAt: moment().unix()
-          }
-        }
-        else {
-          return todo;
-        }
+        return todo.id !== action.id;
       });
     case "RESET_EDITABLE_TODOS":
     return state.map((todo) => {

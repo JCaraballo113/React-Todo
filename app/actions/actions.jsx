@@ -28,7 +28,6 @@ export var startAddTodo = (text) => {
       completed: false,
       createdAt: moment().unix(),
       completedAt: null,
-      editable: false,
       edited: false,
       editedAt: null
     };
@@ -51,18 +50,41 @@ export var addTodos  = (todos) => {
   }
 };
 
-export var toggleTodo  = (id) => {
+export var updateTodo  = (id, updates) => {
   return {
-    type: 'TOGGLE_TODO',
-    id
+    type: 'UPDATE_TODO',
+    id,
+    updates
   };
 };
 
-export var editTodo = (id) => {
-  return {
-    type: "EDIT_TODO",
-    id
+export var startToggleTodo = (id, completed) => {
+  return (dispatch, getState) => {
+    var todoRef = firebaseRef.child(`todos/${id}`);
+    var updates = {
+      completed,
+      completedAt: completed ? moment().unix() : null
+    };
+
+    return todoRef.update(updates).then(() => {
+      dispatch(updateTodo(id, updates));
+    });
   }
+};
+
+export var startSaveEditedTodo = (id, text) => {
+  return (dispatch, getState) => {
+    var todoRef = firebaseRef.child(`todos/${id}`);
+    var updates = {
+      text,
+      edited: true,
+      editedAt: moment().unix()
+    };
+
+    return todoRef.update(updates).then(() => {
+      dispatch(updateTodo(id, updates));
+    });
+  };
 };
 
 export var deleteTodo = (id) => {
@@ -72,16 +94,12 @@ export var deleteTodo = (id) => {
   }
 }
 
-export var saveEditedTodo = (id, text) => {
-  return {
-    type: "SAVE_EDIT",
-    id,
-    text
-  };
-}
+export var startDeleteTodo = (id) => {
+  return (dispatch, getState) => {
+    var todoRef = firebaseRef.child(`todos/${id}`);
 
-export var resetEditables = () => {
-  return {
-    type: "RESET_EDITABLE_TODOS"
-  }
-}
+    return todoRef.remove().then(() => {
+      dispatch(deleteTodo(id));
+    });
+  };
+};

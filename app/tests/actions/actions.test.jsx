@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 var expect = require('expect');
 
+import firebase, {firebaseRef} from 'app/firebase';
 var actions = require('actions');
 
 var createMockStore = configureMockStore([thunk]);
@@ -22,7 +23,7 @@ describe('Actions', () => {
       type: 'ADD_TODO',
       todo: {
         id: '123abc',
-        text: 'test',
+        text: 'boop',
         completed: false,
         createdAt: false,
         edited: true,
@@ -33,24 +34,6 @@ describe('Actions', () => {
     var res = actions.addTodo(action.todo);
 
     expect(res).toEqual(action);
-  });
-
-  it('should create todo and dispatch ADD_TODO', (done) => {
-    const store = createMockStore({});
-    const todoText = 'Test';
-
-    store.dispatch(actions.startAddTodo(todoText)).then(() => {
-      const actions = store.getActions();
-      expect(actions[0]).toInclude({
-        type: 'ADD_TODO'
-      });
-
-      expect(actions[0].todo).toInclude({
-        text: todoText
-      });
-
-      done();
-    }).catch(done);
   });
 
   it('should generate add todos action', () => {
@@ -85,45 +68,12 @@ describe('Actions', () => {
 
   it('should generate toggle todo action', () => {
     var action = {
-      type: 'TOGGLE_TODO',
-      id: 1
+      type: 'UPDATE_TODO',
+      id: '123',
+      updates: {completed: false}
     };
 
-    var res = actions.toggleTodo(action.id);
-
-    expect(res).toEqual(action);
-  });
-
-  it('should generate edit todo action', () => {
-    var action = {
-      type: 'EDIT_TODO',
-      id: 1
-    };
-
-    var res = actions.editTodo(action.id);
-
-    expect(res).toEqual(action);
-  });
-
-  it('should generate save edited todo action', () => {
-    var todoText = "blah";
-    var action = {
-      type: 'SAVE_EDIT',
-      id: 1,
-      text: todoText
-    };
-
-    var res = actions.saveEditedTodo(action.id, todoText);
-
-    expect(res).toEqual(action);
-  });
-
-  it('should generate reset editable todos action', () => {
-    var action = {
-      type: 'RESET_EDITABLE_TODOS'
-    };
-
-    var res = actions.resetEditables();
+    var res = actions.updateTodo(action.id, action.updates);
 
     expect(res).toEqual(action);
   });
@@ -137,5 +87,109 @@ describe('Actions', () => {
     var res = actions.deleteTodo(1);
 
     expect(res).toEqual(action);
+  });
+
+  describe('Tests with firebase todos', () => {
+    var testTodoRef;
+
+    beforeEach((done) => {
+      testTodoRef = firebaseRef.child('todos').push();
+
+      testTodoRef.set({
+        text: 'something',
+        completed: false,
+        createdAt: 12345,
+        edited: false,
+
+      }).then(() => done());
+    });
+
+    afterEach((done) => {
+      testTodoRef.remove().then(() => done());
+    });
+
+    /*it('should create todo and dispatch ADD_TODO', (done) => {
+      const store = createMockStore({});
+      const todoText = 'Test';
+
+      const action = actions.startAddTodo(todoText);
+
+      store.dispatch(action).then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toInclude({
+          type: 'ADD_TODO'
+        });
+
+        expect(actions[0].todo).toInclude({
+          text: todoText
+        });
+
+        done();
+      }).catch(done);
+    });*/
+
+
+    it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
+      const store = createMockStore({});
+      const action = actions.startToggleTodo(testTodoRef.key, true);
+
+      store.dispatch(action).then(() => {
+        const mockActions = store.getActions();
+
+        expect(mockActions[0]).toInclude({
+          type: 'UPDATE_TODO',
+          id: testTodoRef.key
+        });
+
+        expect(mockActions[0].updates).toInclude({
+          completed: true
+        });
+
+        expect(mockActions[0].updates.completedAt).toExist();
+        done();
+
+      }, done);
+    });
+
+    it('should save todo edit and dispatch UPDATE_TODO action', (done) => {
+      const store = createMockStore({});
+      const action = actions.startSaveEditedTodo(testTodoRef.key, 'abc');
+
+      store.dispatch(action).then(() => {
+        const mockActions = store.getActions();
+
+        expect(mockActions[0]).toInclude({
+            type: 'UPDATE_TODO',
+            id: testTodoRef.key,
+        })
+
+        expect(mockActions[0].updates).toInclude({
+          text: 'abc',
+          edited: true
+        });
+
+        expect(mockActions[0].updates.editedAt).toExist();
+        done();
+
+      }, done);
+    });
+
+    it('should delete todo and dispatch DELETE_TODO action', (done) => {
+      const store = createMockStore({});
+      const action = actions.startDeleteTodo(testTodoRef.key);
+
+      store.dispatch(action).then(() => {
+        const mockActions = store.getActions();
+
+        expect(mockActions[0]).toInclude({
+            type: 'DELETE_TODO',
+            id: testTodoRef.key,
+        })
+
+        done();
+
+      }, done);
+    });
+
   });
 });

@@ -4,8 +4,14 @@ var TodoAPI = require('TodoAPI');
 var actions = require('actions');
 
 export var Todo = React.createClass({
+  getInitialState: function() {
+    return {
+      //Since the todo being editable only matters in the front end, make it the only initial state. No need to upload to firebase.
+      editable: false
+    };
+  },
   render: function() {
-    var {text, id, completed, createdAt, completedAt,editable,edited,editedAt, dispatch} = this.props;
+    var {text, id, completed, createdAt, completedAt,edited,editedAt, dispatch} = this.props;
     var todoClassName = completed ? "todo todo__completed" : "todo";
     var renderDate = () => {
       var message = 'Created ';
@@ -26,7 +32,7 @@ export var Todo = React.createClass({
     };
 
     var renderTodo = () => {
-      if(editable && !completed) {
+      if(this.state.editable && !completed) {
         return   <input className="edit-input" type="text" placeholder={text} ref="editTodoText"/>
       }
       else {
@@ -36,9 +42,9 @@ export var Todo = React.createClass({
 
     var renderButton = () => {
       if(!completed) {
-        if(!editable) {
+        if(!this.state.editable) {
           return <button className="small button expanded hollow" ref="editTodoBtn" onClick={() => {
-              dispatch(actions.editTodo(id));
+              this.setState({editable: !this.state.editable});
             }}>Edit Todo</button>;
         }
         else {
@@ -46,22 +52,19 @@ export var Todo = React.createClass({
               var newText = this.refs.editTodoText.value;
               this.refs.editTodoText.value = '';
               if(newText.length > 0) {
-                dispatch(actions.saveEditedTodo(id,newText));
+                dispatch(actions.startSaveEditedTodo(id,newText));
               }
-              else {
-                dispatch(actions.saveEditedTodo(id,text));
-              }
+              this.setState({editable: false});
             }}>Save</button>;
         }
       }
-    }
+    };
 
     return (
       <div className={todoClassName}>
         <div>
           <input type="checkbox" checked={completed} ref="toggler" onClick={()=>{
-              //this.props.onToggle(id);
-              dispatch(actions.toggleTodo(id));
+              dispatch(actions.startToggleTodo(id, !completed));
             }}/>
         </div>
         <div>
@@ -71,7 +74,7 @@ export var Todo = React.createClass({
         <div className="controls">
           {renderButton()}
           <button className="small expanded button alert hollow" ref="deleteTodoBtn" onClick={() => {
-              dispatch(actions.deleteTodo(id));
+              dispatch(actions.startDeleteTodo(id));
             }}>Delete</button>
         </div>
       </div>

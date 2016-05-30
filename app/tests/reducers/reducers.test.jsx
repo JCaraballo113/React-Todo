@@ -48,25 +48,30 @@ describe('Reducers', () => {
       expect(res[0]).toBe(action.todo);
     });
 
-    it('should toggle a todo with provided id', () => {
+    it('should update a todo with completed status', () => {
       var dummyTodos  = [
         {
-          id: 1,
+          id: '123',
           text: "dummy",
           completed : true,
           createdAt : 1,
           completedAt: 123
         }
       ];
-
-      var toggleAction = {
-        type: "TOGGLE_TODO",
-        id: 1
+      var updates = {
+        completed: false,
+        completedAt: null,
+      }
+      var action = {
+        type: "UPDATE_TODO",
+        id: dummyTodos[0].id,
+        updates
       };
 
-      var res = reducers.todosReducer(df(dummyTodos), df(toggleAction));
-      expect(res[0].completed).toBe(false);
-      expect(res[0].completedAt).toBe(undefined);
+      var res = reducers.todosReducer(df(dummyTodos), df(action));
+      expect(res[0].completed).toBe(updates.completed);
+      expect(res[0].completedAt).toBe(updates.completedAt);
+      expect(res[0].text).toEqual(dummyTodos[0].text);
 
     });
 
@@ -91,33 +96,10 @@ describe('Reducers', () => {
       expect(res[0]).toEqual(todos[0])
     });
 
-    it('should set a todo as editable', () => {
+    it('should update a todo when it is edited and saved', () => {
       var todos = [
         {
-          id: 1,
-          text: 'b',
-          completed: false,
-          completedAt: 123,
-          createdAt: 1,
-          editable: false,
-          edited: false,
-          editedAt: undefined
-        }
-      ];
-      var action = {
-        type: 'EDIT_TODO',
-        id: todos[0].id
-      };
-
-      var res = reducers.todosReducer(df(todos), df(action));
-
-      expect(res[0].editable).toEqual(true);
-    });
-
-    it('should save edit on a todo', () => {
-      var todos = [
-        {
-          id: 1,
+          id: '123',
           text: 'b',
           completed: false,
           completedAt: 123,
@@ -127,37 +109,24 @@ describe('Reducers', () => {
           editedAt: undefined
         }
       ];
+
+      var updates = {
+        text: 'bloodbath',
+        edited: true,
+        editedAt: 123
+      };
+
       var action = {
-        type: 'SAVE_EDIT',
-        id: 1,
-        text: 'bloodbath'
+        type: 'UPDATE_TODO',
+        id: todos[0].id,
+        updates
       };
 
       var res = reducers.todosReducer(df(todos), df(action));
 
       expect(res[0].text).toEqual('bloodbath');
-    });
-
-    it('should reset editable todos', () => {
-      var todos = [
-        {
-          id: 1,
-          text: 'b',
-          completed: false,
-          completedAt: 123,
-          createdAt: 1,
-          editable: true,
-          edited: false,
-          editedAt: undefined
-        }
-      ];
-      var action = {
-        type: 'RESET_EDITABLE_TODOS'
-      };
-
-      var res = reducers.todosReducer(df(todos), df(action));
-
-      expect(res[0].editable).toEqual(false);
+      expect(res[0].edited).toBe(true);
+      expect(res[0].editedAt).toEqual(updates.editedAt)
     });
 
     it('should delete todo', () => {
