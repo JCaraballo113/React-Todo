@@ -163,4 +163,31 @@ describe('Reducers', () => {
     });
   });
 
+  describe('authReducer', () => {
+    it('should store uid on LOGIN', () => {
+      const action = {
+        type: 'LOGIN',
+        uid: '123'
+      };
+
+      const res = reducers.authReducer(undefined, df(action));
+
+      expect(res.uid).toEqual(action.uid);
+    });
+
+    it('should return an empty object on LOGOUT', () => {
+      const auth = {
+        uid: '123'
+      };
+
+      const action = {
+        type: 'LOGOUT'
+      };
+
+      const res = reducers.authReducer(df(auth), df(action));
+
+      expect(res).toEqual({});
+    });
+  });
+
 });
