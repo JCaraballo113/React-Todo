@@ -2,15 +2,15 @@ import firebase from 'firebase';
 
 try {
   var config = {
-      apiKey: "AIzaSyBvdh6DJBapkmWd3CyU2f7dhMrrp6Ain9w",
-      authDomain: "john-todo-app.firebaseapp.com",
-      databaseURL: "https://john-todo-app.firebaseio.com",
-      storageBucket: "john-todo-app.appspot.com",
+      apiKey: process.env.API_KEY,
+      authDomain: process.env.AUTH_DOMAIN,
+      databaseURL: process.env.DATABASE_URL,
+      storageBucket: process.env.STORAGE_BUCKET,
     };
 
     firebase.initializeApp(config);
 } catch(e) {
-
+  console.log(e);
 }
 
 export var firebaseRef = firebase.database().ref();

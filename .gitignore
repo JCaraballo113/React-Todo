@@ -2,3 +2,4 @@ node_modules/
 .imdone/
 .vscode/
 public/bundle.js
+config/
