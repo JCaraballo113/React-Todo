@@ -5,10 +5,15 @@ import * as actions from 'actions';
 
 
 export var Login = React.createClass({
-  onLogin() {
+  onLoginGithub() {
     var {dispatch} = this.props;
-    
+
     dispatch(actions.startLogin());
+  },
+  onLoginTwitter() {
+    var {dispatch} = this.props;
+
+    dispatch(actions.startTwitterLogin());
   },
   render() {
     return (
@@ -20,7 +25,8 @@ export var Login = React.createClass({
             <div className="callout callout-auth">
               <h3>Login</h3>
               <p>Login with Github account below.</p>
-              <button className="button" onClick={this.onLogin}>Login With GitHub</button>
+              <button className="button" onClick={this.onLoginTwitter}>Login With Twitter</button>
+              <button className="button" onClick={this.onLoginGithub}>Login With GitHub</button>
             </div>
           </div>
         </div>

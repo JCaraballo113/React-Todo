@@ -1,4 +1,4 @@
-import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
+import firebase, {firebaseRef, githubProvider, twitterProvider} from 'app/firebase/index';
 import moment from 'moment';
 
 export var setSearchText = (searchText) => {
@@ -146,6 +146,14 @@ export var logout = () => {
 export var startLogin = () => {
   return (dispatch, getState) => {
     return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+    }, (error) => {
+    });
+  };
+};
+
+export var startTwitterLogin = () => {
+  return (dispatch, getState) => {
+    return firebase.auth().signInWithPopup(twitterProvider).then((result) => {
     }, (error) => {
     });
   };

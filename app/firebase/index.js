@@ -14,6 +14,7 @@ try {
 }
 
 export var githubProvider = new firebase.auth.GithubAuthProvider();
+export var twitterProvider = new firebase.auth.TwitterAuthProvider();
 export var firebaseRef = firebase.database().ref();
 
 export default firebase;
