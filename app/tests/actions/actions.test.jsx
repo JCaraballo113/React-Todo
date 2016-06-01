@@ -120,7 +120,6 @@ describe('Actions', () => {
 
       firebase.auth().signInWithCredential(credential).then((user) => {
         uid = user.uid;
-        console.log('uid', uid);
         todosRef =  firebaseRef.child(`users/${uid}/todos`);
 
         return todosRef.remove();

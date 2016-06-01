@@ -54,6 +54,8 @@ export var todosReducer = (state=[], action) => {
         editable: false
       }
     });
+    case "LOGOUT":
+      return [];
     default:
       return state;
   };

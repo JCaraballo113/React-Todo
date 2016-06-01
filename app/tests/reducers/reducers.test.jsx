@@ -161,6 +161,25 @@ describe('Reducers', () => {
 
       expect(res.length).toEqual(1);
     });
+
+    it('should clear all todos when user logs out', () => {
+      var todos = [
+        {
+          id: 1,
+          text: 'b',
+          completed: false,
+          completedAt: 123,
+          createdAt: 1
+        }
+      ];
+      var action = {
+        type: 'LOGOUT'
+      };
+
+      var res = reducers.todosReducer(df(todos), df(action));
+
+      expect(res).toEqual([]);
+    });
   });
 
   describe('authReducer', () => {
